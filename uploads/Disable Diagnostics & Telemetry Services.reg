@@ -1,31 +1,58 @@
-Windows Registry Editor Version 5.00
+# Ensure the script is running with elevated privileges
+If (-NOT (Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments")) {
+    Write-Host "This script requires Administrator privileges!"
+    Exit
+}
 
-; Registry File By Adamx
-; Disable Connected User Experiences and Telemetry
+# List of services to stop
+$services = @(
+    "DiagTrack",
+    "dmwappushservice",
+    "diagsvc",
+    "DPS",
+    "diagnosticshub.standardcollector.service",
+    "WdiServiceHost",
+    "WdiSystemHost"
+)
 
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DiagTrack]
-"Start"=dword:00000004
+# Stop each service
+foreach ($service in $services) {
+    Write-Host "Stopping service: $service"
+    Stop-Service -Name $service -Force -ErrorAction SilentlyContinue
+}
 
-; Disable dmwappushservice
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\dmwappushservice]
-"Start"=dword:00000004
+# Apply registry changes
+$regEntries = @(
+    @{Path="HKLM:\SYSTEM\CurrentControlSet\Services\DiagTrack"; Name="Start"; Value=4},
+    @{Path="HKLM:\SYSTEM\CurrentControlSet\Services\dmwappushservice"; Name="Start"; Value=4},
+    @{Path="HKLM:\SYSTEM\CurrentControlSet\Services\diagsvc"; Name="Start"; Value=4},
+    @{Path="HKLM:\SYSTEM\CurrentControlSet\Services\DPS"; Name="Start"; Value=4},
+    @{Path="HKLM:\SYSTEM\CurrentControlSet\Services\diagnosticshub.standardcollector.service"; Name="Start"; Value=4},
+    @{Path="HKLM:\SYSTEM\CurrentControlSet\Services\WdiServiceHost"; Name="Start"; Value=4},
+    @{Path="HKLM:\SYSTEM\CurrentControlSet\Services\WdiSystemHost"; Name="Start"; Value=4}
+)
 
-; Disable Diagnostic Execution Service
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\diagsvc]
-"Start"=dword:00000004
+# Apply the registry changes
+foreach ($reg in $regEntries) {
+    Write-Host "Setting registry key: $($reg.Path)\$($reg.Name)"
+    Set-ItemProperty -Path $reg.Path -Name $reg.Name -Value $reg.Value
+}
 
-; Disable Diagnostic Policy Service
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DPS]
-"Start"=dword:00000004
+# Optionally Restart into Safe Mode (if needed)
+$SafeMode = $true  # Change to $false if you don't want to boot into Safe Mode
+If ($SafeMode) {
+    Write-Host "Changing boot configuration to Safe Mode..."
+    bcdedit /set {current} safeboot minimal
+    Write-Host "System will restart in Safe Mode. Please reboot."
+} Else {
+    Write-Host "System will reboot normally."
+}
 
-; Disable Microsoft (R) Diagnostics Hub Standard Collector Service
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\diagnosticshub.standardcollector.service]
-"Start"=dword:00000004
-
-; Disable Diagnostic Service Host
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WdiServiceHost]
-"Start"=dword:00000004
-
-; Disable Diagnostic System Host
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WdiSystemHost]
-"Start"=dword:00000004
+# Prompt user for reboot
+$reboot = Read-Host "Do you want to restart the computer now? (Y/N)"
+If ($reboot -eq 'Y') {
+    Restart-Computer -Force
+}
+Else {
+    Write-Host "Please restart your computer manually to apply the changes."
+}
