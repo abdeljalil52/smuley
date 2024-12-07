@@ -1,5 +1,17 @@
 Windows Registry Editor Version 5.00
 
-; Force the setting for Power Options
+; Force the setting for Power Options to wake up all cores
 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\943c8cb6-6f93-4227-ad87-e9a3feec08d1]
+"Attributes"="2"
+
+; Enable Maximum CPU performance (affects all cores)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\8c5e7fd7-d8d7-4e2f-baf8-922c7918d9f0]
+"Attributes"="2"
+
+; Disable core parking (forces all cores to be active and used)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\8c5e7fd7-d8d7-4e2f-baf8-922c7918d9f0]
+"Value"="0" ; Setting this to 0 will disable core parking.
+
+; Set Maximum processor state to 100% for all power plans
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power\PowerSettings\4e0f3b4f-c48e-4090-bbde-bd567d6fd88f]
 "Attributes"="2"
