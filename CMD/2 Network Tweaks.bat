@@ -1,24 +1,6 @@
 @echo Off
-color 6
+color 3
 echo.
-echo.
-echo.                 --------------------------------------------------------------------------------------------------------
-for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A 
-:::                
-:::                   ███████╗███╗   ███╗██╗   ██╗██╗     ███████╗██╗   ██╗
-:::                   ██╔════╝████╗ ████║██║   ██║██║     ██╔════╝╚██╗ ██╔╝
-:::                   ███████╗██╔████╔██║██║   ██║██║     █████╗   ╚████╔╝
-:::                   ╚════██║██║╚██╔╝██║██║   ██║██║     ██╔══╝    ╚██╔╝  
-:::                   ███████║██║ ╚═╝ ██║╚██████╔╝███████╗███████╗   ██║ 
-:::                   ╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚══════╝   ╚═╝
-echo.                ----------------------------------------------------------------------------------------------------------
-echo.  
-echo.
-echo.
-echo 
-echo.
-echo                                                        Press Any Key To Continue...     
-pause >nul  
 
 Reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v "NetworkThrottlingIndex" /t REG_DWORD /d "4294967295" /f
 Reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" /v "SystemResponsiveness" /t REG_DWORD /d "0" /f
@@ -40,7 +22,5 @@ echo.
 echo.
 echo.
 echo 
-echo.
-echo                                                        Press Any Key To Exit...     
-pause >nul  
-exit
+echo. Please press any key to exit.
+pause >nul
