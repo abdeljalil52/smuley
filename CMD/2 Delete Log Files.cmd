@@ -1,4 +1,6 @@
-@echo off
+@echo Off
+color 3
+echo.
 echo Deleting .log files...
 
 :: Navigate to the root directory
