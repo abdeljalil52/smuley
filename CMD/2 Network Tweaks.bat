@@ -22,5 +22,8 @@ echo.
 echo.
 echo.
 echo 
-echo. Please press any key to exit.
+echo ============================================================
+echo Windows Updates have been successfully disabled.
+echo Developed by Smuley
+echo ============================================================
 pause >nul
