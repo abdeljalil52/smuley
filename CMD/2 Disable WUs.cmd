@@ -1,4 +1,6 @@
-@echo off
+@echo Off
+color 3
+echo.
 echo Disabling Windows Update services and related settings...
 
 :: Kill the SystemSettings process
