@@ -1,4 +1,6 @@
-@echo off
+@echo Off
+color 3
+echo.
 echo Cleaning temporary directories...
 
 :: Clean user-specific temp folder
