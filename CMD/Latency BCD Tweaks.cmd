@@ -1,10 +1,23 @@
 @echo off
-echo Batch File By Adamx
-echo Disable Dynamic Tick
-echo Disable High Precision Event Timer (HPET)
-echo Disable Synthetic Timers
-@echo
+color 3
+title Timer Optimization Tool
+
+echo.
+echo [-] Disabling dynamic tick...
 bcdedit /set disabledynamictick yes
+
+echo.
+echo [-] Disabling High Precision Event Timer (HPET)...
 bcdedit /deletevalue useplatformclock
+
+echo.
+echo [-] Enabling synthetic timers...
 bcdedit /set useplatformtick yes
-pause
+
+echo.
+echo [+] Timer optimizations have been successfully applied!
+echo ==================================================
+echo              Timer Optimization Tool
+echo             Developed by Smuley
+echo ==================================================
+pause >nul
